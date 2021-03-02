@@ -1,5 +1,5 @@
 ﻿using System;
-namespace StockPortfolio
+namespace PortfolioSimulator
 {
     public class Portfolio
     {
