@@ -14,9 +14,4 @@
     <PackageReference Include="AlphaVantage.Net.Crypto" Version="2.0.2" />
     <PackageReference Include="ServiceStack.Text" Version="5.10.4" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Protected.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>
