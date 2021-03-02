@@ -1,4 +1,4 @@
-*.txt
+Protected.txt
 
 # globs
 Makefile.in
