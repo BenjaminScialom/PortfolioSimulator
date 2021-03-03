@@ -11,7 +11,8 @@ namespace PortfolioSimulator
         private DateTime entryDate;
         private decimal entryPrice;
         private int shares;
-
+        private decimal latestPrice;
+        private DateTime latestDate;
 
 
         public Position()
@@ -26,7 +27,13 @@ namespace PortfolioSimulator
             this.entryPrice = entryPrice;
             this.shares = shares;
 
+            latestPrice = data.GetQuotes(symbol).price;
+            latestDate = data.GetQuotes(symbol).day;
+
         }
+
+
+
 
         public string Symbol { get => symbol; }
         public DateTime EntryDate { get => entryDate; }

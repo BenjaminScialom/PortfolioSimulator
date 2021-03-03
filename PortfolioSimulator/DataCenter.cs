@@ -18,13 +18,13 @@ namespace PortfolioSimulator
             _apiKey = apiKey;
         }
 
-        public List<SecurityData> GetDailyPrices(string symbol)
+        public List<SecurityData> GetDailyInfo(string symbol)
         {
             const string FUNCTION = "TIME_SERIES_DAILY_ADJUSTED";
             string connectionString = "https://" + $@"www.alphavantage.co/query?function={FUNCTION}&symbol={symbol}&apikey={this._apiKey}&datatype=csv";
-            List<SecurityData> prices = connectionString.GetStringFromUrl().FromCsv<List<SecurityData>>();
-            prices.Reverse();
-            return prices;
+            List<SecurityData> info = connectionString.GetStringFromUrl().FromCsv<List<SecurityData>>();
+            info.Reverse();
+            return info;
         }
 
         public Quote GetQuotes(string symbol)
@@ -35,7 +35,18 @@ namespace PortfolioSimulator
             return quote;
         }
 
+        public Dictionary<DateTime, decimal> GetDailyClose(string symbol)
+        {
+            List<SecurityData> data = this.GetDailyInfo(symbol);
+            // Get the timestamp and the price
+            Dictionary<DateTime, decimal> daily_close = new Dictionary<DateTime, decimal>();
+            foreach (var item in data)
+            {
+                daily_close.Add(item.Timestamp, item.Close);
+            }
 
+            return daily_close;
+        }
 
     }
 

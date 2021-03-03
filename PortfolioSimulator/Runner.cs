@@ -12,13 +12,14 @@ namespace PortfolioSimulator
 
             string apiKey = getApiKey();
             DataCenter conn = new DataCenter(apiKey);
-            List<SecurityData> daily_data = conn.GetDailyPrices("AAPL");
+            List<SecurityData> daily_data = conn.GetDailyInfo("AAPL");
             Quote quote_data = conn.GetQuotes("AAPL");
+            Dictionary<DateTime, decimal> daily_close = conn.GetDailyClose("AAPL");
             decimal today_price = daily_data.LastOrDefault().Close;
             decimal today_quote = quote_data.price;
             Console.WriteLine(today_price);
             Console.WriteLine(today_quote);
-
+            Console.WriteLine(daily_close.LastOrDefault());
         }
 
         public static string getApiKey()
