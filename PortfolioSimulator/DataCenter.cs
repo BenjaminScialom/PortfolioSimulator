@@ -48,6 +48,8 @@ namespace PortfolioSimulator
             return daily_close;
         }
 
+
+
     }
 
     /// <summary>
