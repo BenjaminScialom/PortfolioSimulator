@@ -11,9 +11,11 @@ namespace PortfolioSimulator
     public class Portfolio
     {
         private List<Position> positions;
-        private Dictionary<DateTime, decimal> cashHistory = new Dictionary<DateTime, decimal>();
-        private Dictionary<DateTime, decimal> returns = new Dictionary<DateTime, decimal>();
+        private Dictionary<DateTime, decimal> cashByDate = new Dictionary<DateTime, decimal>();
         private Dictionary<DateTime, decimal> valueByDate = new Dictionary<DateTime, decimal>();
+        private Dictionary<DateTime, decimal> returnsByDate = new Dictionary<DateTime, decimal>();
+        private Dictionary<DateTime, decimal> equityByDate = new Dictionary<DateTime, decimal>();
+
         private decimal initialCash;
         private DateTime creationDate;
 
@@ -21,6 +23,7 @@ namespace PortfolioSimulator
         {
             this.initialCash = initialCash;
             this.creationDate = creationDate;
+            cashByDate.Add(creationDate, initialCash);
 
         }
 
@@ -38,39 +41,12 @@ namespace PortfolioSimulator
 
         public void RecordCashMovement(DateTime date, decimal cash)
         {
-            if (!cashHistory.ContainsKey(date))
+            if (!cashByDate.ContainsKey(date))
             {
-                cashHistory.Add(date, cash);
+                cashByDate.Add(date, cash);
             }
         }
 
-        public Dictionary<DateTime, decimal> GetCashHistory()
-        {
-            return cashHistory;
-        }
-
-        public Dictionary<DateTime, Dictionary<string, decimal>> GetPortfolioWeightsHistory()
-        {
-
-            Dictionary<DateTime, Dictionary<string, decimal>> weightsByDate = new Dictionary<DateTime, Dictionary<string, decimal>>();
-            Dictionary<string, decimal> weightsValue = new Dictionary<string, decimal>();
-
-            decimal PortfolioValue = GetCuurentTotalValue();
-
-            if (positions != null)
-            {
-                foreach (var position in positions)
-                {
-                    foreach (var item in position.GetPositionHistoricValues())
-                    {
-                        weightsValue.Add(position.Symbol, item.Value / PortfolioValue);
-                        weightsByDate.Add(item.Key, weightsValue);
-                    }
-                }
-            }
-
-            return weightsByDate;
-        }
 
         public Dictionary<DateTime, decimal> GetPortfolioValueHistory()
         {
@@ -96,17 +72,47 @@ namespace PortfolioSimulator
             return valueByDate;
         }
 
-        public decimal GetCuurentTotalValue()
+
+        public Dictionary<DateTime, decimal> GetReturnsHistory()
         {
-            decimal totalValue = GetPortfolioValueHistory().Values.Last();
-            return totalValue;
+            Dictionary<DateTime, Dictionary<string, decimal>> weights = GetPortfolioWeightsHistory();
+
+            foreach (var position in positions)
+            {
+                foreach (var item in position.GetPositionHistoricReturns())
+                {
+                    decimal wght = weights[item.Key][position.Symbol];
+
+                    if (returnsByDate.ContainsKey(item.Key))
+                    {
+                        returnsByDate[item.Key] += wght * item.Value;
+                    }
+                    else
+                    {
+                        returnsByDate[item.Key] = wght * item.Value;
+                    }
+                }
+            }
+
+            return returnsByDate;
+
         }
 
-        // Get current cash  = intitial cash +/- cash movement
-        // get returns per/positions and date (like value)
-        // get equity history  = cash + stock value
+        public Dictionary<DateTime, decimal> GetEquityHistory()
+        {
+            foreach (var cashItem in cashByDate)
+            {
+                if (valueByDate.ContainsKey(cashItem.Key))
+                {
+                    equityByDate[cashItem.Key] = cashItem.Value + valueByDate[cashItem.Key];
+                }
+            }
 
-        // get portfolio return and volatility
+            return equityByDate;
+        }
+
+
+        // get portfolio volatility
         // Get number of positions
 
 

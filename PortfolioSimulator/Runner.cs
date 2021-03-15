@@ -21,23 +21,23 @@ namespace PortfolioSimulator
             Console.WriteLine(today_quote);
             Console.WriteLine(daily_close);
 
-            decimal previousPrice = 0;
-            decimal currentPrice = 0;
-            decimal change = 0;
+            //decimal previousPrice = 0;
+            //decimal currentPrice = 0;
+            //decimal change = 0;
 
-            Dictionary<DateTime, decimal> returns = new Dictionary<DateTime, decimal>();
+            //Dictionary<DateTime, decimal> returns = new Dictionary<DateTime, decimal>();
 
-            for (int i = 1; i < daily_close.Values.Count; i++)
-            {
-                previousPrice = daily_close.Values.ElementAt(i - 1);
-                currentPrice = daily_close.Values.ElementAt(i);
-                change = (currentPrice - previousPrice) / previousPrice;
+            //for (int i = 1; i < daily_close.Values.Count; i++)
+            //{
+            //    previousPrice = daily_close.Values.ElementAt(i - 1);
+            //    currentPrice = daily_close.Values.ElementAt(i);
+            //    change = (currentPrice - previousPrice) / previousPrice;
 
-                returns.Add(daily_close.Keys.ElementAt(i), Math.Round(change, 4));
+            //    returns.Add(daily_close.Keys.ElementAt(i), Math.Round(change, 4));
 
-            }
+            //}
 
-            Console.WriteLine(returns.Last());
+            //Console.WriteLine(returns.Last());
         }
 
         public static string getApiKey()

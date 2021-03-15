@@ -72,6 +72,11 @@ namespace PortfolioSimulator
             return entryPrice * shares;
         }
 
+        public decimal GetPositionCurrentValue()
+        {
+            return latestPrice * shares;
+        }
+
         public decimal? GetPositionExitValue()
         {
             if (IsClosed())
@@ -121,6 +126,7 @@ namespace PortfolioSimulator
         public int Shares => shares;
         public DateTime? ExitDate => exitDate;
         public decimal? ExitPrice => exitPrice;
+        public decimal LatestValue => this.GetPositionHistoricValues().Values.Last();
 
         public override bool Equals(object obj)
         {
